@@ -1,13 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class EnemyFormation : MonoBehaviour
 {
     public GameObject enemyPrefab;
     public float movementSpeed = 5f;
-    
+    public float spawnDelay = 0.2f;
 
     Boundaries _boundaries;
     Movement _movement;
@@ -25,26 +27,27 @@ public class EnemyFormation : MonoBehaviour
         _movement = new Movement(gameObject, _boundaries);
 
         //Set the initial move direction
-        _moveDirection = Random.Range(0, 2) == 0 ? Vector3.left : Vector3.right;
+        _moveDirection = UnityEngine.Random.Range(0, 2) == 0 ? Vector3.left : Vector3.right;
     }
 
     private void SpawnNewEnemies()
     {
         foreach (Transform child in transform)
         {
-            var enemy = Instantiate(enemyPrefab, child.position, Quaternion.identity);
-            enemy.transform.parent = child;
+            if (child.childCount == 0)
+            {
+                var enemy = Instantiate(enemyPrefab, child.position, Quaternion.identity);
+                enemy.transform.parent = child;
+            }
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        var enemiesPositions = GetExistingEnemiesPositions();
-
-        if (enemiesPositions.Length == 0)
+        if (GetExistingEnemiesPositions().Length == 0)
         {
-            SpawnNewEnemies();
+            SpawnUntilFull();
         }
 
         _movement.MoveBounded(_moveDirection, movementSpeed);
@@ -58,6 +61,25 @@ public class EnemyFormation : MonoBehaviour
         else if (newPosition.x >= _boundaries.XMax)
         {
             _moveDirection = Vector3.left;
+        }
+    }
+
+    private Transform NextFreePosition()
+    {
+        return transform
+            .Cast<Transform>()
+            .Where(t => t.childCount == 0)
+            .FirstOrDefault();
+    }
+
+    private void SpawnUntilFull()
+    {
+        var nextFreePosition = NextFreePosition();
+        if (nextFreePosition)
+        {
+            var enemy = Instantiate(enemyPrefab, nextFreePosition.position, Quaternion.identity);
+            enemy.transform.parent = nextFreePosition;
+            Invoke(nameof(SpawnUntilFull), spawnDelay);
         }
     }
 
