@@ -100,9 +100,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitPoints: 3
+  collisionDamage: 1
   movementSpeed: 10
   projectile: {fileID: 1477389173140028, guid: 57c04c9bc48890b4c822bdd307ed4a98, type: 2}
-  projectileSpeed: 15
+  projectileSpeed: 20
   projectilesInterval: 0.15
 --- !u!212 &212204153459545248
 SpriteRenderer:
