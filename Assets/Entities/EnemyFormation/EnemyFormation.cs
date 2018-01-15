@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using UnityEngine;
 
 public class EnemyFormation : MonoBehaviour
@@ -11,25 +7,28 @@ public class EnemyFormation : MonoBehaviour
     public float movementSpeed = 5f;
     public float spawnDelay = 0.2f;
 
-    private float _maxRandomDirectionChangePerSeconds = 0.2f;
+    private float _maxRandomDirectionChangePerSeconds = 0.1f;
 
     Boundaries _boundaries;
     Movement _movement;
 
     Vector3 _moveDirection;
 
+    Vector2 _enemySize;
+
     // Use this for initialization
     void Start()
     {
+        _enemySize = enemyPrefab.GetComponent<SpriteRenderer>().size;
         //Spawn the enemies
         SpawnNewEnemies();
 
         //Calculate initial boundaries
-        _boundaries = new Boundaries(CalculateFormationSize(GetExistingEnemiesPositions()) / 2);
+        _boundaries = new Boundaries(_enemySize / 2);
         _movement = new Movement(gameObject, _boundaries);
 
         //Set the initial move direction
-        _moveDirection = UnityEngine.Random.Range(0, 2) == 0 ? Vector3.left : Vector3.right;
+        _moveDirection = Random.Range(0, 2) == 0 ? Vector3.left : Vector3.right;
     }
 
     private void SpawnNewEnemies()
@@ -52,23 +51,30 @@ public class EnemyFormation : MonoBehaviour
             SpawnUntilFull();
         }
 
-        _movement.MoveBounded(_moveDirection, movementSpeed);
+        _movement.MoveUnbounded(_moveDirection, movementSpeed);
 
-        var newPosition = _boundaries.GetRestrictedPosition(_movement.GetMovePosition(_moveDirection, movementSpeed));
-
-
-        if (newPosition.x <= _boundaries.XMin || newPosition.x >= _boundaries.XMax)
+        if (GetMinX() <= _boundaries.XMin)
         {
-            _moveDirection = -_moveDirection;
+            _moveDirection = Vector3.right;
+        }
+        else if (GetMaxX() >= _boundaries.XMax)
+        {
+            _moveDirection = Vector3.left;
         }
 
         ////Occassionaly change direction
         float directionChangeProbability = Time.deltaTime * _maxRandomDirectionChangePerSeconds;
-        if (UnityEngine.Random.value < directionChangeProbability)
+        if (Random.value < directionChangeProbability)
         {
             _moveDirection = -_moveDirection;
         }
     }
+
+
+    private float GetMinX() => GetExistingEnemiesPositions().Min(p => p.x);
+
+    private float GetMaxX() => GetExistingEnemiesPositions().Max(p => p.x);
+
 
     private Transform NextFreePosition()
     {
@@ -89,38 +95,36 @@ public class EnemyFormation : MonoBehaviour
         }
     }
 
-    private Vector3 CalculateFormationSize(Vector3[] positions)
-    {
-        if (positions.Length == 0)
-            return new Vector3();
+    //private Vector3 CalculateFormationSize(Vector3[] positions)
+    //{
+    //    if (positions.Length == 0)
+    //        return new Vector3();
 
-        float xMin = positions.Min(p => p.x);
-        float xMax = positions.Max(p => p.x);
-        float yMin = positions.Min(p => p.y);
-        float yMax = positions.Max(p => p.y);
+    //    float xMin = positions.Min(p => p.x);
+    //    float xMax = positions.Max(p => p.x);
+    //    float yMin = positions.Min(p => p.y);
+    //    float yMax = positions.Max(p => p.y);
 
-        var enemySize = enemyPrefab.GetComponent<SpriteRenderer>().size;
+    //    return new Vector3(xMax - xMin + _enemySize.x, yMax - yMin + _enemySize.y);
+    //}
 
-        return new Vector3(xMax - xMin + enemySize.x, yMax - yMin + enemySize.y);
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    var positions = transform
+    //        .Cast<Transform>()
+    //        .Select(t => t.position)
+    //        .ToArray();
 
-    private void OnDrawGizmos()
-    {
-        var positions = transform
-            .Cast<Transform>()
-            .Select(t => t.position)
-            .ToArray();
+    //    float xMin = positions.Min(p => p.x);
+    //    float xMax = positions.Max(p => p.x);
+    //    float yMin = positions.Min(p => p.y);
+    //    float yMax = positions.Max(p => p.y);
 
-        float xMin = positions.Min(p => p.x);
-        float xMax = positions.Max(p => p.x);
-        float yMin = positions.Min(p => p.y);
-        float yMax = positions.Max(p => p.y);
-
-        var center = new Vector3((xMin + xMax) / 2, (yMin + yMax) / 2);
+    //    var center = new Vector3((xMin + xMax) / 2, (yMin + yMax) / 2);
 
 
-        Gizmos.DrawWireCube(center, CalculateFormationSize(positions));
-    }
+    //    Gizmos.DrawWireCube(center, CalculateFormationSize(positions));
+    //}
 
     private Vector3[] GetExistingEnemiesPositions()
     {
