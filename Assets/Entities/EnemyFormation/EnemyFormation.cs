@@ -11,6 +11,8 @@ public class EnemyFormation : MonoBehaviour
     public float movementSpeed = 5f;
     public float spawnDelay = 0.2f;
 
+    private float _maxRandomDirectionChangePerSeconds = 0.2f;
+
     Boundaries _boundaries;
     Movement _movement;
 
@@ -54,13 +56,17 @@ public class EnemyFormation : MonoBehaviour
 
         var newPosition = _boundaries.GetRestrictedPosition(_movement.GetMovePosition(_moveDirection, movementSpeed));
 
-        if (newPosition.x <= _boundaries.XMin)
+
+        if (newPosition.x <= _boundaries.XMin || newPosition.x >= _boundaries.XMax)
         {
-            _moveDirection = Vector3.right;
+            _moveDirection = -_moveDirection;
         }
-        else if (newPosition.x >= _boundaries.XMax)
+
+        ////Occassionaly change direction
+        float directionChangeProbability = Time.deltaTime * _maxRandomDirectionChangePerSeconds;
+        if (UnityEngine.Random.value < directionChangeProbability)
         {
-            _moveDirection = Vector3.left;
+            _moveDirection = -_moveDirection;
         }
     }
 
