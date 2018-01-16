@@ -119,8 +119,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitPoints: 2
   projectile: {fileID: 1477389173140028, guid: f91fd5b5cf3dff2488c5b636b1c52ea7, type: 2}
-  shotsPerSeconds: 0.5
+  shotsPerSeconds: 0.6
   projectileSpeed: 15
+  scoreValue: 150
+  shot: {fileID: 8300000, guid: 810c664ad8880dc4e90171038a9de3a1, type: 3}
+  destroy: {fileID: 8300000, guid: 784b9bd481f0b834983d55617ec58e25, type: 3}
 --- !u!212 &212187847475170054
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -152,8 +155,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1510815719
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300108, guid: b4055edf5a0a8c743a705244ec7a0517, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

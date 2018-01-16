@@ -317,6 +317,8 @@
     <Compile Include="Assets\Scripts\Movement.cs" />
     <Compile Include="Assets\Scripts\MusicPlayer.cs" />
     <Compile Include="Assets\Scripts\Position.cs" />
+    <Compile Include="Assets\Scripts\ScoreDisplay.cs" />
+    <Compile Include="Assets\Scripts\ScoreKeeper.cs" />
     <Compile Include="Assets\Scripts\Shredder.cs" />
   </ItemGroup>
   <ItemGroup>

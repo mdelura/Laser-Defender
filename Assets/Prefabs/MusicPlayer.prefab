@@ -11,22 +11,6 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1930421071998594}
   m_IsPrefabParent: 1
---- !u!1 &1474891247582002
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4462297054140020}
-  - component: {fileID: 82707057123603418}
-  m_Layer: 0
-  m_Name: bg_music_jammerboy70__cyber-race
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1930421071998594
 GameObject:
   m_ObjectHideFlags: 0
@@ -36,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4643385064310420}
   - component: {fileID: 114126627157561394}
+  - component: {fileID: 82200881880281600}
   m_Layer: 0
   m_Name: MusicPlayer
   m_TagString: Untagged
@@ -43,19 +28,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4462297054140020
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1474891247582002}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4643385064310420}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4643385064310420
 Transform:
   m_ObjectHideFlags: 1
@@ -65,25 +37,24 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 4462297054140020}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &82707057123603418
+--- !u!82 &82200881880281600
 AudioSource:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1474891247582002}
+  m_GameObject: {fileID: 1930421071998594}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: cf47d28eff84c354281779a834f8ea51, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.1
+  m_Volume: 0.4
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -137,7 +108,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 0
+    m_RotationOrder: 4
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -161,3 +132,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b23af25d0bf9564c8c905379189921e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startClip: {fileID: 8300000, guid: 1c0baa2e52589344cb888a4cc09735c4, type: 3}
+  gameClip: {fileID: 8300000, guid: 4ce2f6af4df07f747bf04a310267bc41, type: 3}
+  endClip: {fileID: 8300000, guid: 90c0b40d4f23b9c41a5f5f3431179975, type: 3}

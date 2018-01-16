@@ -11,17 +11,21 @@ public class PlayerController : MonoBehaviour, IDamageable
     public float projectileSpeed = 20;
     public float projectilesInterval;
 
+    public AudioClip shot;
+    public AudioClip destroy;
+
     Boundaries _boundaries;
     Movement _movement;
     Vector2 _size;
 
     float _lastShotTime;
 
-
+    LevelManager _levelManager;
 
     // Use this for initialization
     void Start()
     {
+        _levelManager = FindObjectOfType<LevelManager>();
         _lastShotTime = -projectilesInterval;
         _size = GetComponent<SpriteRenderer>().size;
         _boundaries = new Boundaries(_size / 2);
@@ -59,7 +63,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         _lastShotTime = Time.time;
         var projectile = Instantiate(this.projectile, transform.position, Quaternion.identity).GetComponent<IProjectile>();
-        
+        AudioSource.PlayClipAtPoint(shot, transform.position);
+
         projectile.Fire(playerMovement, new Vector2(0, projectileSpeed));
     }
 
@@ -69,7 +74,12 @@ public class PlayerController : MonoBehaviour, IDamageable
         hitPoints -= damage;
 
         if (hitPoints <= 0)
+        {
             Destroy(gameObject);
+            AudioSource.PlayClipAtPoint(destroy, transform.position);
+            _levelManager.LoadLevel("Lose");
+
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
