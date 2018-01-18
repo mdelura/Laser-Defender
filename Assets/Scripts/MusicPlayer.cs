@@ -32,7 +32,6 @@ public class MusicPlayer : MonoBehaviour
 
     private void SceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
-        Debug.Log("Music player: level ");
         _music.Stop();
         switch (scene.buildIndex)
         {
