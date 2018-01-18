@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MusicPlayer : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class MusicPlayer : MonoBehaviour
         else
         {
             instance = this;
+            SceneManager.sceneLoaded += SceneLoaded;
             DontDestroyOnLoad(gameObject);
             _music = GetComponent<AudioSource>();
             _music.clip = startClip;
@@ -28,11 +30,11 @@ public class MusicPlayer : MonoBehaviour
         }
     }
 
-    private void OnLevelWasLoaded(int level)
+    private void SceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
         Debug.Log("Music player: level ");
         _music.Stop();
-        switch (level)
+        switch (scene.buildIndex)
         {
             case 0:
                 _music.clip = startClip;

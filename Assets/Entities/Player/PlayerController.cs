@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             move += _movement.MoveBounded(Vector3.right, movementSpeed);
         }
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time >= _lastShotTime + projectilesInterval)
+        if (Input.GetKey(KeyCode.Space) && Time.time >= _lastShotTime + projectilesInterval)
         {
             ShootProjectile(move);
         }
