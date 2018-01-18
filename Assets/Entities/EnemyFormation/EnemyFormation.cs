@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EnemyFormation : MonoBehaviour
@@ -16,6 +18,8 @@ public class EnemyFormation : MonoBehaviour
 
     Vector2 _enemySize;
 
+    Dictionary<Transform, int> _formationSetup = new Dictionary<Transform, int>();
+
     // Use this for initialization
     void Start()
     {
@@ -27,8 +31,14 @@ public class EnemyFormation : MonoBehaviour
         _boundaries = new Boundaries(_enemySize / 2);
         _movement = new Movement(gameObject, _boundaries);
 
+        _formationSetup = transform
+            .Cast<Transform>()
+            .ToDictionary(t => t, t => 0);
+
+
+
         //Set the initial move direction
-        _moveDirection = Random.Range(0, 2) == 0 ? Vector3.left : Vector3.right;
+        _moveDirection = UnityEngine.Random.Range(0, 2) == 0 ? Vector3.left : Vector3.right;
     }
 
     private void SpawnNewEnemies()
@@ -48,7 +58,7 @@ public class EnemyFormation : MonoBehaviour
     {
         if (GetExistingEnemiesPositions().Length == 0)
         {
-            SpawnUntilFull();
+            SendNewWave();
         }
 
         _movement.MoveUnbounded(_moveDirection, movementSpeed);
@@ -64,17 +74,34 @@ public class EnemyFormation : MonoBehaviour
 
         ////Occassionaly change direction
         float directionChangeProbability = Time.deltaTime * _maxRandomDirectionChangePerSeconds;
-        if (Random.value < directionChangeProbability)
+        if (UnityEngine.Random.value < directionChangeProbability)
         {
             _moveDirection = -_moveDirection;
         }
     }
 
+    private void SendNewWave()
+    {
+        RaiseLevel();
+        SpawnUntilFull();
+    }
+
+    private void RaiseLevel()
+    {
+        var lowestLevel = _formationSetup.Min(kv => kv.Value);
+
+        var raisedPosition = _formationSetup
+            .First(kv => kv.Value == lowestLevel)
+            .Key;
+
+        _formationSetup[raisedPosition]++;
+
+        movementSpeed += lowestLevel * 0.1f;
+    }
 
     private float GetMinX() => GetExistingEnemiesPositions().Min(p => p.x);
 
     private float GetMaxX() => GetExistingEnemiesPositions().Max(p => p.x);
-
 
     private Transform NextFreePosition()
     {
@@ -91,40 +118,11 @@ public class EnemyFormation : MonoBehaviour
         {
             var enemy = Instantiate(enemyPrefab, nextFreePosition.position, Quaternion.identity);
             enemy.transform.parent = nextFreePosition;
+            enemy.GetComponent<Enemy>().Level = _formationSetup[nextFreePosition];
+
             Invoke(nameof(SpawnUntilFull), spawnDelay);
         }
     }
-
-    //private Vector3 CalculateFormationSize(Vector3[] positions)
-    //{
-    //    if (positions.Length == 0)
-    //        return new Vector3();
-
-    //    float xMin = positions.Min(p => p.x);
-    //    float xMax = positions.Max(p => p.x);
-    //    float yMin = positions.Min(p => p.y);
-    //    float yMax = positions.Max(p => p.y);
-
-    //    return new Vector3(xMax - xMin + _enemySize.x, yMax - yMin + _enemySize.y);
-    //}
-
-    //private void OnDrawGizmos()
-    //{
-    //    var positions = transform
-    //        .Cast<Transform>()
-    //        .Select(t => t.position)
-    //        .ToArray();
-
-    //    float xMin = positions.Min(p => p.x);
-    //    float xMax = positions.Max(p => p.x);
-    //    float yMin = positions.Min(p => p.y);
-    //    float yMax = positions.Max(p => p.y);
-
-    //    var center = new Vector3((xMin + xMax) / 2, (yMin + yMax) / 2);
-
-
-    //    Gizmos.DrawWireCube(center, CalculateFormationSize(positions));
-    //}
 
     private Vector3[] GetExistingEnemiesPositions()
     {

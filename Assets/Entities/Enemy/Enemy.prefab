@@ -122,6 +122,12 @@ MonoBehaviour:
   shotsPerSeconds: 0.6
   projectileSpeed: 15
   scoreValue: 150
+  sprite: {fileID: 21300098, guid: b4055edf5a0a8c743a705244ec7a0517, type: 3}
+  sprites:
+  - {fileID: 21300098, guid: b4055edf5a0a8c743a705244ec7a0517, type: 3}
+  - {fileID: 21300108, guid: b4055edf5a0a8c743a705244ec7a0517, type: 3}
+  - {fileID: 21300118, guid: b4055edf5a0a8c743a705244ec7a0517, type: 3}
+  - {fileID: 21300128, guid: b4055edf5a0a8c743a705244ec7a0517, type: 3}
   shot: {fileID: 8300000, guid: 810c664ad8880dc4e90171038a9de3a1, type: 3}
   destroy: {fileID: 8300000, guid: 784b9bd481f0b834983d55617ec58e25, type: 3}
 --- !u!212 &212187847475170054
@@ -158,7 +164,7 @@ SpriteRenderer:
   m_SortingLayerID: -1510815719
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300108, guid: b4055edf5a0a8c743a705244ec7a0517, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -166,5 +172,5 @@ SpriteRenderer:
   m_Size: {x: 0.93, y: 0.84}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
