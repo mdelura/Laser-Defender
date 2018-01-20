@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour, IDamageable
     public Sprite[] sprites;
     public AudioClip shot;
     public AudioClip destroy;
+    public GameObject explosion;
 
     #endregion
 
@@ -80,9 +81,10 @@ public class Enemy : MonoBehaviour, IDamageable
         _hitPoints -= damage;
         if (_hitPoints <= 0)
         {
-            Destroy(gameObject);
             _scoreKeeper.Score(_scoreValue);
             AudioSource.PlayClipAtPoint(destroy, transform.position);
+            Instantiate(explosion, transform.position, Quaternion.identity);
+            Destroy(gameObject);
         }
     }
 
