@@ -6,5 +6,6 @@ using System.Threading.Tasks;
 
 interface IDamageable
 {
+    event Action Destroyed;
     void Damage(int damage);
 }

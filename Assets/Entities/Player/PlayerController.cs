@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IDamageable
 {
@@ -7,6 +8,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public int collisionDamage = 1;
     public float movementSpeed = 10f;
 
+    public GameObject explosion;
     public GameObject projectile;
     public float projectileSpeed = 20;
     public float projectilesInterval;
@@ -20,12 +22,15 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     float _lastShotTime;
 
-    LevelManager _levelManager;
+    
+
+    public event Action Destroyed;
+
+    public Controls Controls { get; set; }
 
     // Use this for initialization
     void Start()
     {
-        _levelManager = FindObjectOfType<LevelManager>();
         _lastShotTime = -projectilesInterval;
         _size = GetComponent<SpriteRenderer>().size;
         _boundaries = new Boundaries(_size / 2);
@@ -37,23 +42,23 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         Vector3 move = new Vector3();
 
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(Controls.Up))
         {
             move += _movement.MoveBounded(Vector3.up, movementSpeed);
         }
-        if (Input.GetKey(KeyCode.DownArrow))
+        if (Input.GetKey(Controls.Down))
         {
             move += _movement.MoveBounded(Vector3.down, movementSpeed);
         }
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(Controls.Left))
         {
             move += _movement.MoveBounded(Vector3.left, movementSpeed);
         }
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(Controls.Right))
         {
             move += _movement.MoveBounded(Vector3.right, movementSpeed);
         }
-        if (Input.GetKey(KeyCode.Space) && Time.time >= _lastShotTime + projectilesInterval)
+        if (Input.GetKey(Controls.Fire) && Time.time >= _lastShotTime + projectilesInterval)
         {
             ShootProjectile(move);
         }
@@ -75,12 +80,14 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         if (hitPoints <= 0)
         {
-            Destroy(gameObject);
             AudioSource.PlayClipAtPoint(destroy, transform.position);
-            _levelManager.LoadLevel("Lose");
-
+            Instantiate(explosion, transform.position, Quaternion.identity);
+            OnDestroyed();
+            Destroy(gameObject);
         }
     }
+
+    private void OnDestroyed() => Destroyed?.Invoke();
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

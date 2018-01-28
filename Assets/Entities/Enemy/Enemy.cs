@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
+    public event Action Destroyed;
 
     #region Public fields exposed to Editor
     public GameObject projectile;
@@ -28,7 +29,8 @@ public class Enemy : MonoBehaviour, IDamageable
 
 
     private int _collisionDamage = 1;
-    private ScoreKeeper _scoreKeeper; 
+    private ScoreKeeper _scoreKeeper;
+
     #endregion
 
     public int Level
@@ -84,9 +86,12 @@ public class Enemy : MonoBehaviour, IDamageable
             _scoreKeeper.Score(_scoreValue);
             AudioSource.PlayClipAtPoint(destroy, transform.position);
             Instantiate(explosion, transform.position, Quaternion.identity);
+            OnDestroyed();
             Destroy(gameObject);
         }
     }
+
+    private void OnDestroyed() => Destroyed?.Invoke();
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

@@ -37,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1133295970456124}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -4.41, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -102,6 +102,7 @@ MonoBehaviour:
   hitPoints: 3
   collisionDamage: 1
   movementSpeed: 10
+  explosion: {fileID: 1034954298636640, guid: 14dccb3a07eb19f458ac7298477e05bb, type: 2}
   projectile: {fileID: 1477389173140028, guid: 57c04c9bc48890b4c822bdd307ed4a98, type: 2}
   projectileSpeed: 20
   projectilesInterval: 0.15

@@ -27,25 +27,37 @@ public class MusicPlayer : MonoBehaviour
             _music.clip = startClip;
             _music.loop = transform;
             _music.Play();
+
+            Preferences.PreferenceChanged += PlayerPrefsManager_PreferenceChanged;
+        }
+    }
+
+    private void PlayerPrefsManager_PreferenceChanged(PreferenceChangedEventArgs eventArgs)
+    {
+        if (eventArgs.PreferenceName == nameof(Preferences.MasterVolume))
+        {
+            _music.volume = (float)eventArgs.Value;
         }
     }
 
     private void SceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
-        _music.Stop();
-        switch (scene.buildIndex)
+        switch (scene.name)
         {
-            case 0:
+            case "Start":
                 _music.clip = startClip;
                 break;
-            case 1:
+            case "Game":
                 _music.clip = gameClip;
                 break;
-            case 2:
+            case "Lose":
                 _music.clip = endClip;
                 break;
+            default:
+                return;
         }
 
+        _music.Stop();
         _music.loop = transform;
         _music.Play();
     }
