@@ -119,8 +119,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectile: {fileID: 1477389173140028, guid: f91fd5b5cf3dff2488c5b636b1c52ea7, type: 2}
   initialHitPoints: 1
-  initialShotsPerSeconds: 0.6
-  initialProjectileSpeed: 15
+  initialShotsPerSeconds: 0.8
+  initialProjectileSpeed: 12
   initialScoreValue: 150
   sprites:
   - {fileID: 21300098, guid: b4055edf5a0a8c743a705244ec7a0517, type: 3}

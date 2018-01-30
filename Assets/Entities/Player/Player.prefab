@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3646d6f834605b409faf7a26e30c78a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitPoints: 3
+  hitPoints: 5
   collisionDamage: 1
   movementSpeed: 10
   explosion: {fileID: 1034954298636640, guid: 14dccb3a07eb19f458ac7298477e05bb, type: 2}

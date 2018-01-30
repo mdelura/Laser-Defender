@@ -62,9 +62,9 @@ public class Enemy : MonoBehaviour, IDamageable
     private void OnSetLevel()
     {
         _hitPoints = initialHitPoints + _level;
-        _shotsPerSeconds = initialShotsPerSeconds + 0.1f * _level;
-        _projectileSpeed = initialProjectileSpeed + _level;
-        _scoreValue = initialScoreValue + 50 * _level;
+        _shotsPerSeconds = initialShotsPerSeconds + 0.05f * _level;
+        _projectileSpeed = initialProjectileSpeed + _level / 2;
+        _scoreValue = initialScoreValue + 50 * _level / 2;
         SetSprite();
         print($"Level {_level}, HP: {_hitPoints}, SP: {_shotsPerSeconds}, PS: {_projectileSpeed}, SV: {_scoreValue}");
     }
